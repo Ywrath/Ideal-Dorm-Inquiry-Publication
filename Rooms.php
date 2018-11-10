@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+    include ('connection.php');
+?>
 <html>
 <head>
 	<title>Rooms</title>
@@ -7,6 +10,8 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/custom.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
     <link rel ="icon" href="img/homeIcon.png">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -26,20 +31,20 @@
   <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item active">
-        <a class="nav-link" href="Index.php">Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="Index.php"><span class="fa fa-home"></span> Home<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="Rooms.php">Rooms</a>
+        <a class="nav-link" href="Rooms.php"><span class="fa fa-bed"></span> Rooms</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="Reservation.php">Reservation</a>
+        <a class="nav-link" href="Inquiry.php"><span class="fa fa-bookmark"></span> Inquiry</a>
       </li>
       <li class="nav-item">
         <a class="nav-link disabled" href="#"></a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
-      <li><a class = "nav-link" href="#" data-toggle = "modal" data-target ="#modalLogin">Log-in</a></li>
+      <li><a class = "nav-link" href="#" data-toggle = "modal" data-target ="#modalLogin"><span class= "fa fa-sign-in"></span> Log-in</a></li>
     </ul>
   </div>
 </nav>
@@ -48,197 +53,118 @@
 <br>
 <br>
 <div class="container">  
+  <h3>Old Building Rooms</h3>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead class ="thead-dark">
+      <tr>
+        <th>Room Number</th>
+        <th>Building</th>
+        <th>Room Type</th>
+        <th>Rate</th>
+        <th>Availability</th>
+        <th>No. of Boarders</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php
+        $dis_room = mysqli_query($conn, "SELECT * FROM rooms WHERE Bldg= 'Old Building'");
+
+        if(mysqli_num_rows($dis_room) > 0){
+
+          while ($dis_room_row = mysqli_fetch_assoc($dis_room)) {
+            echo "<tr>
+                <td>".$dis_room_row['RoomNum']."</td>
+                <td>".$dis_room_row['Bldg']."</td>
+                <td>".$dis_room_row['RoomType']."</td>
+                <td>".$dis_room_row['Rate']."</td>
+                <td>".$dis_room_row['Availability']."/2</td>
+                <td>".$dis_room_row['NoOfBoarders']."</td>
+            </tr>";
+          }
+        } else {
+          echo "<p>No Rooms</p>";
+        }
+      ?>
+    </tbody>
+  </table>
+ 
   <div>
-  <h3>Rooms</h3>
+  <h3>New Building Rooms</h3>
 </div>
-
-<div>
-  <h4>Old Building Female</h4>
-  <table class = "table table-hover">
-    <thead>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead class ="thead-dark">
       <tr>
-        <th scope="col">Room</th>
-        <th scope="col">Rate</th>
-        <th scope="col">Availability</th>
+        <th>Room Number</th>
+        <th>Building</th>
+        <th>Room Type</th>
+        <th>Rate</th>
+        <th>Availability</th>
+        <th>No. of Boarders</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>2,500 php per month</td>
-        <td>0/2</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>2,500 php per month</td>
-        <td>0/2</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>2,500 php per month</td>
-        <td>0/2</td>
-      </tr>
-      <tr>
-        <th scope="row">4</th>
-        <td>2,500 php per month</td>
-        <td>0/2</td>
-      </tr>
+      <?php
+        $dis_room = mysqli_query($conn, "SELECT * FROM rooms WHERE Bldg= 'New Building'");
+
+        if(mysqli_num_rows($dis_room) > 0){
+
+          while ($dis_room_row = mysqli_fetch_assoc($dis_room)) {
+            echo "<tr>
+                <td>".$dis_room_row['RoomNum']."</td>
+                <td>".$dis_room_row['Bldg']."</td>
+                <td>".$dis_room_row['RoomType']."</td>
+                <td>".$dis_room_row['Rate']."</td>
+                <td>".$dis_room_row['Availability']."/8</td>
+                <td>".$dis_room_row['NoOfBoarders']."</td>
+            </tr>";
+          }
+        } else {
+          echo "<p>No Rooms</p>";
+        }
+      ?>
     </tbody>
   </table>
-</div>
-
-<div>
-  <h4>Old Building Male</h4>
-  <table class = "table table-hover">
-    <thead>
+  <div>
+    <h3>Private Rooms</h3>
+  </div>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead class ="thead-dark">
       <tr>
-        <th scope="col">Room</th>
-        <th scope="col">Rate</th>
-        <th scope="col">Availability</th>
+        <th>Room Number</th>
+        <th>Building</th>
+        <th>Room Type</th>
+        <th>Rate</th>
+        <th>Availability</th>
+        <th>No. of Boarders</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">5</th>
-        <td>2,500 php per month</td>
-        <td>0/2</td>
-      </tr>
-      <tr>
-        <th scope="row">6</th>
-        <td>2,500 php per month</td>
-        <td>0/2</td>
-      </tr>
-      <tr>
-        <th scope="row">7</th>
-        <td>2,500 php per month</td>
-        <td>0/2</td>
-      </tr>
-      <tr>
-        <th scope="row">8</th>
-        <td>2,500 php per month</td>
-        <td>0/2</td>
-      </tr>
+      <?php
+        $dis_room = mysqli_query($conn, "SELECT * FROM rooms WHERE Bldg= 'Private Rooms'");
+
+        if(mysqli_num_rows($dis_room) > 0){
+
+          while ($dis_room_row = mysqli_fetch_assoc($dis_room)) {
+            echo "<tr>
+                <td>".$dis_room_row['RoomNum']."</td>
+                <td>".$dis_room_row['Bldg']."</td>
+                <td>".$dis_room_row['RoomType']."</td>
+                <td>".$dis_room_row['Rate']."</td>
+                <td>".$dis_room_row['Availability']."/8</td>
+                <td>".$dis_room_row['NoOfBoarders']."</td>
+            </tr>";
+          }
+        } else {
+          echo "<p>No Rooms</p>";
+        }
+      ?>
     </tbody>
   </table>
+ </div>
 </div>
-
-<div>
-  <h4>New Building Female</h4>
-  <table class = "table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Room</th>
-        <th scope="col">Rate</th>
-        <th scope="col">Availability</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-      <tr>
-        <th scope="row">4</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-       <tr>
-        <th scope="row">5</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-       <tr>
-        <th scope="row">6</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div>
-  <h4>New Building Male</h4>
-  <table class = "table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Room</th>
-        <th scope="col">Rate</th>
-        <th scope="col">Availability</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">7</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-      <tr>
-        <th scope="row">8</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-      <tr>
-        <th scope="row">9</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-      <tr>
-        <th scope="row">10</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-       <tr>
-        <th scope="row">11</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-       <tr>
-        <th scope="row">12</th>
-        <td>3,000 php per month</td>
-        <td>0/8</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div>
-  <h4>Private Rooms</h4>
-  <table class = "table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Room</th>
-        <th scope="col">Rate</th>
-        <th scope="col">Availability</th>
-      </tr>
-    </thead>
-    <tbody>
-     <tr>
-      <th scope="row">1</th>
-      <td>7,000 php per month</td>
-      <td>0/2</td>
-     </tr>
-     <tr>
-        <th scope="row">2</th>
-      <td>7,000 php per month</td>
-      <td>0/2</td>
-     </tr>
-    </tbody>
-
-  </table>
-</div>
-</div>
-
 
 </body>
 </html>

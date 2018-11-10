@@ -47,10 +47,12 @@ if(isset($_POST['inquire'])){
 
 	if ($result) {
 		$insert_inquiry = mysqli_query($conn,"INSERT INTO inquiry(Name, Email, ContactNum, CourseYear, RoomNum, Building, Message) VALUES ('$name', '$email', '$contact_num', '$courseYear', '$roomInterested', '$room_building', '$inquirer_message')");
-		echo "<script>alert('Email Sent!')</script><meta http-equiv='refresh' content='0; url=Inquiry.php'>";
+		echo "<script>alert('Email Sent!')</script> <meta http-equiv='refresh' content='0; url=landlord_inquiry.php'>";
 	}
 	else{
 		echo "<script>alert('Insert failed!'); </script>". $mail->ErrorInfo;
 	}
 }
+
+
 ?>

@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <?php
-	session_start();
-  $conn = mysqli_connect('localhost', 'root', '', 'ideal_dorm');
+    session_start();
+    $conn = mysqli_connect('localhost', 'root', '', 'ideal_dorm');
+    $session_user = htmlspecialchars($_SESSION['username']);
 
-	if (!isset($_SESSION['username'])) {
-		
-		header("location: index.php");
-	}
+    if (!$session_user) {
+        header("location: index.php");
+    }
 
-	$fullname = $_SESSION['fullname'];
+    $fullname = htmlspecialchars($_SESSION['fullname']); //session fullname
+    $disp_contNum = mysqli_query($conn, "SELECT * FROM admin");
+    $disp_row = mysqli_fetch_assoc($disp_contNum);
 
-  $disp_contNum = mysqli_query($conn, "SELECT * FROM admin");
-  $disp_row = mysqli_fetch_assoc($disp_contNum);
 
 ?>
-<!DOCTYPE html>
 <html>
 <head>
-	<title>Ideal Dorm Home</title>
+	<title>Reservation</title>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/custom.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel ="icon" href="img/homeIcon.png">
     <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <link rel ="icon" href="img/homeIcon.png">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -61,41 +60,74 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="ManageProfile.php"><span class="fa fa-user"></span> Manage Profile</a>
-          <a class="dropdown-item" data-toggle="modal" data-target="#changeContactNum"><span class="fa fa-address-book"></span> Change Contact</a>
+          <a class="dropdown-item" href="#"><span class="fa fa-address-book"></span> Change Contact</a>
           <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> Logout</a>
         </div>
       </li>
     </ul>
   </div>
 </nav>
-<?php include('library/modals/changeContactNum.php'); ?>
+<br>
+<br>
+<br>
+<br>
 <div class="container">
-<div>
-  <iframe align="right" src="Carousel.html" width="700" height="500" frameborder="0" scrolling="no"></iframe>
-  </div>
-
-<span class="border-left">
-    <div class = "row">
-	   <div class = "text-left">
-      <br>
-      <br>
-      <br>
-		  <p>Ideal Dorm is a mixed dormitory located <br> 
-		  in front of Central Philippine University, Jaro, Iloilo. <br>
-		  Ideal Dorm has three buildings and the rates of rooms <br>
-		  vary depending on the building you will choose. </p>
-
-		  <p>The buildings inside the dormitory are New Building, <br>
-		  Old Building, and Private Rooms.</p>	
-
-		  <p>The dormitory enforces a strict 10:00 PM Curfew for its <br>
-			dormers for their safety and to avoid non-dormers from <br>
-			getting inside during curfew hours</p>
+<form action="SendEmail_Admin.php" class="row" method="post">
+	<div class="form-group col-4">
+		<label for="name">Name</label>
+		<input type="text" class = "form-control" name="name" id="name" placeholder="Juan De la Cruz" required>
+	</div>
+	<div class="form-group col-4">
+		<label for="email">Email Address</label>
+		<input type="email" class = "form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="juan@yahoo.com" required>
+	</div>
+	<div class ="form-group col-4">
+		<label for="contactNum">Contact Number</label>
+		<input type="text" class="form-control" id="contactNum" name="contactNum" placeholder="09123456789" required>
+	</div>
+	<div class="form-group col-3">
+		<label for="courseAndYear">Course & Year</label>
+		<input type="text" name="courseAndYear" class = "form-control" id="courseAndYear" placeholder="BSIT-1">
+	</div>
+	<div class ="form-group col-3">
+		<label for="roomInterested">Room Interested</label>
+		<input type="text" class="form-control" name="roomNumber" id="roomNumber" placeholder="12" required>
+	</div>
+	
+	<div>
+	 <label>Building</label>
+	  <div class="form-check">
+ 		<input class="form-check-input" type="radio" name="building" id="newBuilding" value="New Building" required>
+  		 <label class="form-check-label" for="newBuilding">
+    		New Building
+  		 </label>
 	   </div>
-    </div>
-</span>
+	   <div class="form-check">
+  		<input class="form-check-input" type="radio" name="building" id="oldBuilding" value="Old Building" required>
+  		<label class="form-check-label" for="oldBuilding">
+    	Old Building
+  		</label>
+	   </div>
+	   <div class="form-check">
+  		<input class="form-check-input" type="radio" name="building" id="private" value="Private Rooms" required>
+  		<label class="form-check-label" for="private">
+    	Private Room
+  		</label>
+		</div>
+	</div>
+
+<div class="form-group">
+    <label for="message">Message</label>
+    <textarea class="form-control rounded-0" name="message" rows="5" cols="225"></textarea>
 </div>
-<br><br><br><br><br><br><br><br><br>
+
+<button type="submit" class="btn btn-primary" name="inquire">Reserve</button>
+
+
+</form>
+</div>
+
+<br><br><br>
 <footer>
  <div class="container-fluid">
     <div class="row footer-top">
@@ -141,26 +173,6 @@
     </div> 
 </div>
 </footer>
-<?php
-    if (isset($_POST['save'])) {
-        
-        $contact_num = $_POST['contact_num'];
-        $id = $_POST['id'];
 
-        $contact_num_sql = mysqli_query($conn, "UPDATE admin 
-          SET ContactNum = '$contact_num' WHERE ID = '$id'");
-
-        if ($contact_num_sql) {
-             echo "<script>
-              alert('Sucessfully updated contact number');
-            </script>
-            <meta http-equiv='refresh' content='0; url=land_lord_dashboard.php'>";
-        } else {
-              echo "<script>
-              alert('Failure in updating contact number');
-            </script>";
-        }
-    }
-?>
 </body>
 </html>

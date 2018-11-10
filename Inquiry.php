@@ -1,31 +1,20 @@
 <!DOCTYPE html>
 <?php
-	session_start();
-  $conn = mysqli_connect('localhost', 'root', '', 'ideal_dorm');
-
-	if (!isset($_SESSION['username'])) {
-		
-		header("location: index.php");
-	}
-
-	$fullname = $_SESSION['fullname'];
-
-  $disp_contNum = mysqli_query($conn, "SELECT * FROM admin");
-  $disp_row = mysqli_fetch_assoc($disp_contNum);
+    
+    include('connection.php');
 
 ?>
-<!DOCTYPE html>
 <html>
 <head>
-	<title>Ideal Dorm Home</title>
+	<title>Inquiry</title>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/custom.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel ="icon" href="img/homeIcon.png">
     <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <link rel ="icon" href="img/homeIcon.png">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -45,57 +34,85 @@
   <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item active">
-        <a class="nav-link" href="land_lord_dashboard.php"><span class="fa fa-home"></span> Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="Index.php"><span class="fa fa-home"></span> Home<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="landlord_rooms.php"><span class="fa fa-bed"></span> Rooms</a>
+        <a class="nav-link" href="Rooms.php"><span class="fa fa-bed"></span> Rooms</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="landlord_inquiry.php"><span class="fa fa-bookmark"></span> Inquiry</a>
+        <a class="nav-link" href="Inquiry.php"><span class="fa fa-bookmark"></span> Inquiry</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#"></a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
-     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <span class="fa fa-gear"></span> Hello, <?php echo $fullname; ?>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="ManageProfile.php"><span class="fa fa-user"></span> Manage Profile</a>
-          <a class="dropdown-item" data-toggle="modal" data-target="#changeContactNum"><span class="fa fa-address-book"></span> Change Contact</a>
-          <a class="dropdown-item" href="logout.php"><span class="fa fa-sign-out"></span> Logout</a>
-        </div>
-      </li>
+      <li><a class = "nav-link" href="#" data-toggle = "modal" data-target ="#modalLogin"><span class= "fa fa-sign-in"></span> Log-in</a></li>
     </ul>
   </div>
 </nav>
-<?php include('library/modals/changeContactNum.php'); ?>
+<?php include('library/modals/loginModal.php'); ?>
+<br>
+<br>
+<br>
+<br>
 <div class="container">
-<div>
-  <iframe align="right" src="Carousel.html" width="700" height="500" frameborder="0" scrolling="no"></iframe>
+<form action="SendEmail.php" class="row" method="post">
+  <div class="form-group col-4">
+    <label for="name">Name</label>
+    <input type="text" class = "form-control" name="name" id="name" placeholder="Juan De la Cruz" required>
+  </div>
+  <div class="form-group col-4">
+    <label for="email">Email Address</label>
+    <input type="email" name="email" class = "form-control" id="email" aria-describedby="emailHelp" placeholder="juan@yahoo.com" required>
+  </div>
+  <div class ="form-group col-4">
+    <label for="contactNum">Contact Number</label>
+    <input type="text" class="form-control" id="contactNum" name="contactNum" placeholder="09123456789" required>
+  </div>
+  <div class="form-group col-3">
+    <label for="courseAndYear">Course & Year</label>
+    <input type="text" name="courseAndYear" class = "form-control" id="courseAndYear" placeholder="BSIT-1">
+  </div>
+  <div class ="form-group col-3">
+    <label for="roomInterested">Room Interested</label>
+    <input type="text" class="form-control" name="roomNumber" id="roomNumber" placeholder="12" required>
+  </div>
+  
+  <div>
+   <label>Building</label>
+    <div class="form-check">
+    <input class="form-check-input" type="radio" name="building" id="newBuilding" value="New Building" required>
+       <label class="form-check-label" for="newBuilding">
+        New Building
+       </label>
+     </div>
+     <div class="form-check">
+      <input class="form-check-input" type="radio" name="building" id="oldBuilding" value="Old Building" required>
+      <label class="form-check-label" for="oldBuilding">
+      Old Building
+      </label>
+     </div>
+     <div class="form-check">
+      <input class="form-check-input" type="radio" name="building" id="private" value="Private Rooms" required>
+      <label class="form-check-label" for="private">
+      Private Room
+      </label>
+    </div>
   </div>
 
-<span class="border-left">
-    <div class = "row">
-	   <div class = "text-left">
-      <br>
-      <br>
-      <br>
-		  <p>Ideal Dorm is a mixed dormitory located <br> 
-		  in front of Central Philippine University, Jaro, Iloilo. <br>
-		  Ideal Dorm has three buildings and the rates of rooms <br>
-		  vary depending on the building you will choose. </p>
-
-		  <p>The buildings inside the dormitory are New Building, <br>
-		  Old Building, and Private Rooms.</p>	
-
-		  <p>The dormitory enforces a strict 10:00 PM Curfew for its <br>
-			dormers for their safety and to avoid non-dormers from <br>
-			getting inside during curfew hours</p>
-	   </div>
-    </div>
-</span>
+<div class="form-group">
+    <label for="message">Message</label>
+    <textarea class="form-control rounded-0" name="message" rows="5" cols="225"></textarea>
 </div>
-<br><br><br><br><br><br><br><br><br>
+
+<button type="submit" class="btn btn-primary" name="inquire">SEND</button>
+
+
+</form>
+</div>
+
+<br><br><br>
 <footer>
  <div class="container-fluid">
     <div class="row footer-top">
@@ -138,29 +155,10 @@
         <div style="padding: 15px 0;" class="text-center text-white">
             <h5 class="col-lg-12">Developed By JG Solutions</h5>
         </div>
-    </div> 
+    </div>
+  </div> 
 </div>
 </footer>
-<?php
-    if (isset($_POST['save'])) {
-        
-        $contact_num = $_POST['contact_num'];
-        $id = $_POST['id'];
 
-        $contact_num_sql = mysqli_query($conn, "UPDATE admin 
-          SET ContactNum = '$contact_num' WHERE ID = '$id'");
-
-        if ($contact_num_sql) {
-             echo "<script>
-              alert('Sucessfully updated contact number');
-            </script>
-            <meta http-equiv='refresh' content='0; url=land_lord_dashboard.php'>";
-        } else {
-              echo "<script>
-              alert('Failure in updating contact number');
-            </script>";
-        }
-    }
-?>
 </body>
 </html>
